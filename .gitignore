@@ -1,10 +1,14 @@
 
 Authify/db.sqlite3
-Authify/Authify/migrations/
-Authify/SecureBase/migrations/
+db.sqlite3
+venv/
+system-design.drawio
+# Ignore all __pycache__ folders
+__pycache__/
+Authify/__pycache__/
+SecureBase/__pycache__/
 Authify/Authify/__pycache__/
 Authify/SecureBase/__pycache__/
-venv/
-Authify/__pycache__/__init__.cpython-312.pyc
-Authify/__pycache__/settings.cpython-312.pyc
-system-design.drawio
+SecureBase/migrations/__pycache__/
+# Track migration files, do NOT ignore them
+# SecureBase/migrations/*.py (should be tracked)
