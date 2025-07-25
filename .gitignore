@@ -10,6 +10,6 @@ SecureBase/__pycache__/
 Authify/Authify/__pycache__/
 Authify/SecureBase/__pycache__/
 SecureBase/migrations/__pycache__/
-  SecureBase/migrations/*
+SecureBase/migrations/*
 # Track migration files, do NOT ignore them
 # SecureBase/migrations/*.py (should be tracked)
