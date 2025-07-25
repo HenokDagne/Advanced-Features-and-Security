@@ -1,0 +1,6 @@
+
+Authify/db.sqlite3
+Authify/Authify/migrations/
+Authify/SecureBase/migrations/
+Authify/Authify/__pycache__/
+Authify/SecureBase/__pycache__/
