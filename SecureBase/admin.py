@@ -24,5 +24,13 @@ class CustomUserAdmin(UserAdmin):
         }),
     )
 
+@admin.register(PremiumUser)
+class PremiumUserAdmin(admin.ModelAdmin):
+    list_display = ('id','user', 'membrership_start_date', 'membership_end_date', 'premium_features_enabled')
+    search_fields = ('user__email',)
+    list_filter = ('premium_features_enabled',)
+    list_editable = ('user', 'membership_end_date', 'premium_features_enabled')
+
+
      
     
