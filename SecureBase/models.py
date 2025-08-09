@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class CustomUser(AbstractUser):
@@ -68,9 +70,26 @@ class PremiumUser(models.Model):
                 
         return False
             
-    
+            
+class Post(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts')
+    title = models.CharField(max_length=255, null=True)
+    content = models.TextField(null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
+    image = models.ImageField(upload_to='posts/', blank=True, null=True)
+    def save(self, *args, **kwargs):
+        if self.pk:  # If the post already exists (update)
+            self.updated_at = timezone.now()
+        super().save(*args, **kwargs)
+    def clean(self):
+        if not self.content and not self.image:
+            raise ValidationError("You must provide either content or an image (or both) for a post.")
     
         
+
+
+   
 
 
  

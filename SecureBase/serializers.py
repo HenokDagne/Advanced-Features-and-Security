@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import CustomUser, PremiumUser
+from .models import CustomUser, PremiumUser, Post
+from datetime import date
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,3 +16,32 @@ class PremiumUserSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'membrership_start_date', 'membership_end_date', 'premium_features_enabled'
         ]
+class PostSerializer(serializers.ModelSerializer):
+    author = CustomUserSerializer(read_only=True)
+    post_time = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Post
+        fields = [
+            'id', 'title', 'content', 'author', 'created_at', 'updated_at', 'post_time'
+        ]
+
+    def post_time(self, obj):
+        if obj.created_at:
+            days = (date.today() - obj.created_at.date()).days
+            if days == 0:
+                return "Today"
+            elif days == 1:
+                return "Yesterday"
+            elif days < 7:
+                return f"{days} days ago"
+            elif days < 30:
+                weeks = days // 7
+                return f"{weeks} week{'s' if weeks > 1 else ''} ago"
+            elif days < 365:
+                months = days // 30
+                return f"{months} month{'s' if months > 1 else ''} ago"
+            else:
+                years = days // 365
+                return f"{years} year{'s' if years > 1 else ''} ago"
+        return None
