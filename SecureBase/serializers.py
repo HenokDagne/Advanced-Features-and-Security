@@ -16,8 +16,15 @@ class PremiumUserSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'membrership_start_date', 'membership_end_date', 'premium_features_enabled'
         ]
+
+
+class AuthorSerialize(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = [ 'username', 'email']
+
 class PostSerializer(serializers.ModelSerializer):
-    author = CustomUserSerializer(read_only=True)
+    author = AuthorSerialize(read_only=True)
     post_time = serializers.SerializerMethodField()
 
     class Meta:

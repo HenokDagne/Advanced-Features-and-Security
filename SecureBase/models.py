@@ -36,7 +36,7 @@ class CustomUser(AbstractUser):
         if hasattr(self, 'premium_profile'):
             return self.premium_profile.is_active_premim()
         return False
-    
+
 
 
 class PremiumUser(models.Model):
@@ -69,6 +69,7 @@ class PremiumUser(models.Model):
                     return True    
                 
         return False
+    
             
             
 class Post(models.Model):
