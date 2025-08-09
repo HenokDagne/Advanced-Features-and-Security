@@ -21,19 +21,24 @@ class PremiumUserSerializer(serializers.ModelSerializer):
 class AuthorSerialize(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = [ 'username', 'email']
+        fields = [ 'id', 'username', 'email']
 
 class PostSerializer(serializers.ModelSerializer):
     author = AuthorSerialize(read_only=True)
     post_time = serializers.SerializerMethodField()
+    user = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), write_only=True)
 
     class Meta:
         model = Post
         fields = [
-            'id', 'title', 'content', 'author', 'created_at', 'updated_at', 'post_time'
+            'id', 'title', 'content', 'author', 'created_at', 'updated_at', 'post_time', 'image', 'user'
         ]
+    def validate(self, data):
+        if not data.get('content') and not data.get('image'):
+            raise serializers.ValidationError("You must provide either content or an image (or both) for a post.") 
+        return data   
 
-    def post_time(self, obj):
+    def get_post_time(self, obj):
         if obj.created_at:
             days = (date.today() - obj.created_at.date()).days
             if days == 0:

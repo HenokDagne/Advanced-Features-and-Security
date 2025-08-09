@@ -83,9 +83,6 @@ class Post(models.Model):
         if self.pk:  # If the post already exists (update)
             self.updated_at = timezone.now()
         super().save(*args, **kwargs)
-    def clean(self):
-        if not self.content and not self.image:
-            raise ValidationError("You must provide either content or an image (or both) for a post.")
     
         
 

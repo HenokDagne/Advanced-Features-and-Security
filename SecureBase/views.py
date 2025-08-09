@@ -2,11 +2,13 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import CustomUserSerializer, PremiumUserSerializer
-from .models import CustomUser, PremiumUser
+from .serializers import CustomUserSerializer, PremiumUserSerializer, PostSerializer
+from .models import CustomUser, PremiumUser, Post
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.db.models import Q
 from django.contrib.auth import authenticate
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import generics
 # Create your views here.
 
 class CustomUserViewSet(viewsets.ModelViewSet):
@@ -41,6 +43,8 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             'refresh': str(refresh),
             'access': str(refresh.access_token),
         }, status=201)
+    
+    
     @action(detail=False, methods=['POST'], url_path='login')
     def login(self, request):
         email = request.data.get('email')
@@ -60,6 +64,22 @@ class CustomUserViewSet(viewsets.ModelViewSet):
             }, status=200)
         except CustomUser.DoesNotExist:
             return Response({'errormessage': 'User does not exist.'}, status=404)
+        
+class PostViewSet(viewsets.ModelViewSet):
+
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]
+
+
+
+class FilterUser(generics.ListAPIView):
+    """
+    A view to filter users based on query parameters.
+    """
+    pass
+    
+           
              
             
         
